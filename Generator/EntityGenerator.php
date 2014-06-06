@@ -933,8 +933,8 @@ public function __construct()
     private function generateEntityStubMethod(ClassMetadataInfo $metadata, $type, $fieldName, $typeHint = null,  $defaultValue = null)
     {
         $methodName = $type . Inflector::classify($fieldName);
-        if (in_array($type, array("has", "add", "remove")) && substr($methodName, -1) == "s") {
-            $methodName = substr($methodName, 0, -1);
+        if (in_array($type, array("has", "add", "remove"))) {
+            $methodName = sprintf('%s%s', $type, ucfirst(Inflector::singularize($fieldName)));
         }
 
         $hasMethodName = str_replace(array('set', 'get', 'add', 'remove', 'has'), 'has', $methodName);
@@ -960,8 +960,15 @@ public function __construct()
             $methodTypeHint =  $typeHint . ' ';
         }
 
+        $description = ucfirst($type) . (
+            in_array($type, array('has', 'add', 'remove'))
+                ? Inflector::singularize($fieldName)
+                : $fieldName
+            )
+        ;
+
         $replacements = array(
-          '<description>'       => ucfirst($type) . ' ' . $fieldName,
+          '<description>'       => $description,
           '<methodTypeHint>'    => $methodTypeHint,
           '<variableType>'      => $variableType,
           '<variableName>'      => Inflector::camelize($fieldName),
