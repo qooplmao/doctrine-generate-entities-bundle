@@ -6,8 +6,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Doctrine\ORM\Tools\EntityRepositoryGenerator;
-use Doctrine\Bundle\DoctrineBundle\Mapping\DisconnectedMetadataFactory;
+use Symfony\Component\Console\Helper\DialogHelper;
 
 /**
  * Generate entity classes from mapping information
@@ -74,6 +73,9 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        /** @var DialogHelper $dialog */
+        $dialog = $this->getHelperSet()->get('dialog');
+
         $manager = new DisconnectedMetadataFactory($this->getContainer()->get('doctrine'));
 
         try {
@@ -107,6 +109,10 @@ EOT
 
         $repoGenerator = new EntityRepositoryGenerator();
         foreach ($metadata->getMetadata() as $m) {
+            if ($dialog->askConfirmation($output, sprintf('<question>Do you want to update/generate the model/interface for %s?</question>', $m->name), false)) {
+                continue;
+            }
+
             if ($backupExisting) {
                 $basename = substr($m->name, strrpos($m->name, '\\') + 1);
                 $output->writeln(sprintf('  > backing up <comment>%s.php</comment> to <comment>%s.php~</comment>', $basename, $basename));
