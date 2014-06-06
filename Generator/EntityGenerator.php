@@ -960,7 +960,7 @@ public function __construct()
             $methodTypeHint =  $typeHint . ' ';
         }
 
-        $description = ucfirst($type) . (
+        $description = ucfirst($type) . ' ' . (
             in_array($type, array('has', 'add', 'remove'))
                 ? Inflector::singularize($fieldName)
                 : $fieldName
