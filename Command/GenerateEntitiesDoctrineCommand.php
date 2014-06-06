@@ -111,7 +111,7 @@ EOT
 
         $repoGenerator = new EntityRepositoryGenerator();
         foreach ($metadata->getMetadata() as $m) {
-            if ($dialog->askConfirmation($output, sprintf('<question>Do you want to update/generate the model/interface for %s?</question>', $m->name), false)) {
+            if (false === $dialog->askConfirmation($output, sprintf('<question>Question:</question> Do you want to update/generate the model/interface for <comment>%s</comment>? (y/n) [<comment>n</comment>]', $m->name), false)) {
                 continue;
             }
 
