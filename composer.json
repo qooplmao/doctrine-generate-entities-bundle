@@ -26,7 +26,7 @@
     "require": {
     },
     "require-dev": {
-        "doctrine/doctrine-bundle": "1.3.*@dev"
+        "doctrine/doctrine-bundle": "~1.2"
     },
     "autoload": {
         "psr-0": { "QoopLmao\\Doctrine\\GeneratorBundle": "" }
